@@ -1,0 +1,6 @@
+pandas
+numpy
+seaborn
+pandas-profiling
+datetime
+auto-sklearn
