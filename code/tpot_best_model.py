@@ -2,10 +2,12 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
+import matplotlib.pyplot as plt
 
 # NOTE: Make sure that the outcome column is labeled 'target' in the data file
-tpot_data = pd.read_csv('../data/IMU.csv', sep=',', dtype=np.float64)
-features = tpot_data.drop('activity', axis=1)
+tpot_data = pd.read_csv("../data/IMU.csv", dtype={'activity' : 'category'}, parse_dates=['UnixTime','gps_unixTime'], date_parser=lambda epoch: pd.to_datetime(float(epoch)/1000))
+features = tpot_data.drop(['activity', 'UnixTime', 'gps_unixTime'], axis=1)
 training_features, testing_features, training_target, testing_target = \
             train_test_split(features, tpot_data['activity'], random_state=1)
 
@@ -17,3 +19,10 @@ if hasattr(exported_pipeline, 'random_state'):
 
 exported_pipeline.fit(training_features, training_target)
 results = exported_pipeline.predict(testing_features)
+
+fig = plt.figure(figsize=(25,20))
+_ = tree.plot_tree(exported_pipeline, feature_names=features, class_names=tpot_data['activity'], filled=True)
+fig.savefig("decision_tree.png")
+
+
+                
