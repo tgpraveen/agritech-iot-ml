@@ -25,11 +25,4 @@ results = exported_pipeline.predict(testing_features)
 fig = plt.figure(figsize=(25,20))
 tree.plot_tree(exported_pipeline, feature_names=features.columns, class_names=tpot_data['activity'], filled=True)
 fig.savefig("decision_tree_1.pdf")
-
-import graphviz
-# DOT data
-dot_data = tree.export_graphviz(exported_pipeline, out_file="decision_tree_2.png", feature_names=features.columns, class_names=tpot_data['activity'], filled=True)
-
-# Draw graph
-graph = graphviz.Source(dot_data, format="png") 
-graph           
+fig.savefig("decision_tree_1.png")        
